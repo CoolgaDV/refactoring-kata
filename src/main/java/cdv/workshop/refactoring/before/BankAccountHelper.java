@@ -1,4 +1,6 @@
-package cdv.workshop.refactoring;
+package cdv.workshop.refactoring.before;
+
+import cdv.workshop.refactoring.BankAccountRepository;
 
 import java.math.BigDecimal;
 import java.util.UUID;

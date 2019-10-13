@@ -1,4 +1,6 @@
-package cdv.workshop.refactoring;
+package cdv.workshop.refactoring.after;
+
+import cdv.workshop.refactoring.BankAccountRepository;
 
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.regex.Pattern;

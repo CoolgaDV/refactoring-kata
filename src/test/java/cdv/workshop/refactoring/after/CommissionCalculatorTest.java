@@ -1,4 +1,4 @@
-package cdv.workshop.refactoring;
+package cdv.workshop.refactoring.after;
 
 import org.junit.jupiter.api.Test;
 

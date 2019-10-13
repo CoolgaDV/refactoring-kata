@@ -1,14 +1,16 @@
-package cdv.workshop.refactoring;
+package cdv.workshop.refactoring.before;
 
+import cdv.workshop.refactoring.BankAccountRepository;
 import org.junit.jupiter.api.Test;
 import org.mockito.InOrder;
+
+import java.math.BigDecimal;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.inOrder;
 
-class MoneyTransferServiceTest {
+class BankAccountHelperTest {
 
     private static final String ACCOUNT_FROM = "777777777777";
     private static final String ACCOUNT_TO = "333333333333";
@@ -17,14 +19,14 @@ class MoneyTransferServiceTest {
 
     private BankAccountRepository repository = mock(BankAccountRepository.class);
 
-    private MoneyTransferService service = new MoneyTransferService(repository);
+    private BankAccountHelper helper = new BankAccountHelper(repository);
 
     @Test
     void shouldTransferMoneySuccessfully() {
 
         when(repository.holdMoney(ACCOUNT_FROM, SUM)).thenReturn(HOLD_ID);
 
-        service.transfer(ACCOUNT_FROM, ACCOUNT_TO, SUM);
+        helper.transfer(ACCOUNT_FROM, ACCOUNT_TO, SUM);
 
         InOrder order = inOrder(repository);
         order.verify(repository).holdMoney(ACCOUNT_FROM, SUM);
@@ -37,10 +39,9 @@ class MoneyTransferServiceTest {
 
         RuntimeException e = assertThrows(
                 RuntimeException.class,
-                () -> service.transfer("abc", ACCOUNT_TO, SUM));
+                () -> helper.transfer("abc", ACCOUNT_TO, SUM));
 
         assertEquals("Transfer failure", e.getMessage());
-        assertEquals("Invalid account number: abc", e.getCause().getMessage());
         verifyNoInteractions(repository);
     }
 
@@ -49,26 +50,23 @@ class MoneyTransferServiceTest {
 
         RuntimeException e = assertThrows(
                 RuntimeException.class,
-                () -> service.transfer(ACCOUNT_FROM, "abc", SUM));
+                () -> helper.transfer(ACCOUNT_FROM, "abc", SUM));
 
         assertEquals("Transfer failure", e.getMessage());
-        assertEquals("Invalid account number: abc", e.getCause().getMessage());
         verifyNoInteractions(repository);
     }
 
     @Test
     void shouldHandleHoldFailure() {
 
-        String exceptionMessage = "Illegal hold";
         when(repository.holdMoney(ACCOUNT_FROM, SUM))
-                .thenThrow(new RuntimeException(exceptionMessage));
+                .thenThrow(new RuntimeException("Illegal hold"));
 
         RuntimeException e = assertThrows(
                 RuntimeException.class,
-                () -> service.transfer(ACCOUNT_FROM, ACCOUNT_TO, SUM));
+                () -> helper.transfer(ACCOUNT_FROM, ACCOUNT_TO, SUM));
 
         assertEquals("Transfer failure", e.getMessage());
-        assertEquals(exceptionMessage, e.getCause().getMessage());
         verify(repository).holdMoney(ACCOUNT_FROM, SUM);
         verifyNoMoreInteractions(repository);
     }
@@ -77,16 +75,14 @@ class MoneyTransferServiceTest {
     void shouldHandleMoneyTransferFailure() {
 
         when(repository.holdMoney(ACCOUNT_FROM, SUM)).thenReturn(HOLD_ID);
-        String exceptionMessage = "Illegal transfer";
-        doThrow(new RuntimeException(exceptionMessage)).when(repository)
+        doThrow(new RuntimeException("Illegal transfer")).when(repository)
                 .transferMoney(ACCOUNT_FROM, ACCOUNT_TO, HOLD_ID);
 
         RuntimeException e = assertThrows(
                 RuntimeException.class,
-                () -> service.transfer(ACCOUNT_FROM, ACCOUNT_TO, SUM));
+                () -> helper.transfer(ACCOUNT_FROM, ACCOUNT_TO, SUM));
 
         assertEquals("Transfer failure", e.getMessage());
-        assertEquals(exceptionMessage, e.getCause().getMessage());
         InOrder order = inOrder(repository);
         order.verify(repository).holdMoney(ACCOUNT_FROM, SUM);
         order.verify(repository).transferMoney(ACCOUNT_FROM, ACCOUNT_TO, HOLD_ID);
@@ -96,9 +92,19 @@ class MoneyTransferServiceTest {
     @Test
     void shouldMakeStatusReport() {
 
-        String report = service.makeStatusReport();
+        String report = helper.makeStatusReport();
 
         assertEquals("Made 0 transfers", report);
+    }
+
+    @Test
+    void shouldCalculateCommission() {
+
+        BigDecimal sum = new BigDecimal(10);
+
+        BigDecimal sumWithCommission = helper.calculateCommission(sum);
+
+        assertEquals(new BigDecimal("11.0"), sumWithCommission);
     }
 
 }
