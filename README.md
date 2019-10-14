@@ -9,7 +9,8 @@
 ## Программа
 
 - Изучение фрагмента кода и поиск code smells (индивидуально каждым из участников).
-  Фрагмент кода для изучения: `cdv.workshop.refactoring.before.BankAccountHelper`
+  Фрагмент кода для изучения: 
+  [BankAccountHelper.java](src/main/java/cdv/workshop/refactoring/before/BankAccountHelper.java)
 - Групповое обсуждение найденных code smells и формирование общего списка.
   Примерный список code smells (см. комментарии начинающиеся с `FIXME`): 
   `cdv.workshop.refactoring.before.BankAccountHelperWithComments`
