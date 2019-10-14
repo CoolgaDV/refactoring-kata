@@ -8,24 +8,27 @@
 
 ## Программа
 
-- Изучение фрагмента кода и поиск code smells (индивидуально каждым из участников).
-  Фрагмент кода для изучения: 
-  [BankAccountHelper.java](src/main/java/cdv/workshop/refactoring/before/BankAccountHelper.java)
+- Изучение 
+  [фрагмента кода](
+  src/main/java/cdv/workshop/refactoring/before/BankAccountHelper.java)
+  и поиск code smells (индивидуально каждым из участников). 
 - Групповое обсуждение найденных code smells и формирование общего списка.
-  Примерный список code smells (см. комментарии начинающиеся с `FIXME`): 
-  `cdv.workshop.refactoring.before.BankAccountHelperWithComments`
-- Написание unit тестов (если времени не очень много можно воспользоваться готовым
-  набором тестов: `cdv.workshop.refactoring.before.BankAccountHelperTest`)
+  [Примерный список code smells]( 
+  src/main/java/cdv/workshop/refactoring/before/BankAccountHelperWithComments.java)
+  (см. комментарии начинающиеся с `FIXME`)
+- Написание unit тестов (если времени не очень много, то можно воспользоваться 
+  [готовым набором тестов]( 
+  src/test/java/cdv/workshop/refactoring/before/BankAccountHelperTest.java)).
+  Этот этап можно проходить как индивидуально каждым из участников, так и
+  по очереди работая за одним компьютером.
 - Как только unit тесты написаны и работают - начинаем атомарные изменения - 
   по одному за раз, при этом после каждого изменения прогоняем unit тесты.
-  Пример того, что должно получиться в результате:
-  - `cdv.workshop.refactoring.after.MoneyTransferService`, 
-  - `cdv.workshop.refactoring.after.CommissionCalculator`
-  
-  и соответствующие тесты
-  
-  - `cdv.workshop.refactoring.after.MoneyTransferServiceTest`
-  - `cdv.workshop.refactoring.after.CommissionCalculatorTest`
+  [Пример того, что должно получиться в результате](
+  src/main/java/cdv/workshop/refactoring/after)
+  и [соответствующие тесты](
+  src/test/java/cdv/workshop/refactoring/after).
+  Этот этап можно проходить как индивидуально каждым из участников, так и
+  по очереди работая за одним компьютером.
 
 ## Список рекомендуемой литературы
 - Refactoring: Improving the Design of Existing Code, Martin Fowler
